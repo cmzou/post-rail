@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+    <title>Flask File Manager</title>
+</head>
+<body>
+    <h1>Files</h1>
+
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <button type="submit">Upload</button>
+    </form>
+
+    <ul>
+        {% for file in files %}
+        <li>
+            {{ file }}
+            [<a href="/download/{{ file }}">download</a>]
+            [<a href="/delete/{{ file }}">delete</a>]
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

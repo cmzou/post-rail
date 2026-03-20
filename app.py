@@ -3,19 +3,16 @@ from flask import Flask, render_template, request, redirect, url_for, send_from_
 from werkzeug.utils import secure_filename
 
 BASE_DIR = os.path.abspath("files")
-ALLOWED_EXTENSIONS = {"txt", "png", "jpg", "jpeg", "gif", "pdf"}
-MAX_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
+MAX_FILE_SIZE_MB = 5
+MAX_FILE_SIZE = 1024 * 1024  * MAX_FILE_SIZE_MB
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = MAX_FILE_SIZE
 app.secret_key = "change-this-secret-key"
 
-os.makedirs(BASE_DIR, exist_ok=True)
-
-
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
-
+def is_allowed_file_ext(filename):
+    return "." in filename and os.path.splitext(filename)[1] in ALLOWED_EXTENSIONS
 
 def safe_path(filename):
     # Prevent path traversal
@@ -25,12 +22,10 @@ def safe_path(filename):
         abort(403)
     return full_path
 
-
 @app.route("/")
 def index():
     files = os.listdir(BASE_DIR)
-    return render_template("index.html", files=files)
-
+    return render_template("index.html", files=files, BASE_DIR=BASE_DIR)
 
 @app.route("/upload", methods=["POST"])
 def upload():
@@ -42,7 +37,7 @@ def upload():
     if f.filename == "":
         abort(400)
 
-    if not allowed_file(f.filename):
+    if not is_allowed_file_ext(f.filename):
         abort(400)
 
     filename = secure_filename(f.filename)
@@ -55,26 +50,24 @@ def upload():
     f.save(path)
     return redirect(url_for("index"))
 
-
 @app.route("/delete/<filename>", methods=["POST"])
 def delete(filename):
     path = safe_path(filename)
 
     if os.path.exists(path):
-        os.remove(path)
+        # os.remove(path)
+        print(f"file {path} has been removed")
 
     return redirect(url_for("index"))
-
 
 @app.route("/download/<filename>")
 def download(filename):
     filename = secure_filename(filename)
     return send_from_directory(BASE_DIR, filename, as_attachment=True)
 
-
 @app.errorhandler(413)
 def too_large(e):
-    return "File too large (max 5MB)", 413
+    return f"File too large (max {MAX_FILE_SIZE_MB} MB)", 413
 
 
 if __name__ == "__main__":

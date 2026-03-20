@@ -1,13 +1,13 @@
 <!doctype html>
 <html>
 <head>
-    <title>Flask File Manager</title>
+    <title>Secure Flask File Manager</title>
 </head>
 <body>
     <h1>Files</h1>
 
     <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file">
+        <input type="file" name="file" required>
         <button type="submit">Upload</button>
     </form>
 
@@ -15,8 +15,11 @@
         {% for file in files %}
         <li>
             {{ file }}
-            [<a href="/download/{{ file }}">download</a>]
-            [<a href="/delete/{{ file }}">delete</a>]
+            <a href="/download/{{ file }}">download</a>
+
+            <form action="/delete/{{ file }}" method="post" style="display:inline;">
+                <button type="submit">delete</button>
+            </form>
         </li>
         {% endfor %}
     </ul>

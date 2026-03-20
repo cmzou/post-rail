@@ -2,7 +2,8 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory, abort
 from werkzeug.utils import secure_filename
 
-BASE_DIR = os.path.abspath("files")
+IMAGE_DIR = "images"
+BASE_DIR = os.path.abspath(IMAGE_DIR)
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 MAX_FILE_SIZE_MB = 5
 MAX_FILE_SIZE = 1024 * 1024  * MAX_FILE_SIZE_MB
@@ -25,7 +26,7 @@ def safe_path(filename):
 @app.route("/")
 def index():
     files = os.listdir(BASE_DIR)
-    return render_template("index.html", files=files, BASE_DIR=BASE_DIR)
+    return render_template("index.html", files=files, IMAGE_DIR=IMAGE_DIR)
 
 @app.route("/upload", methods=["POST"])
 def upload():

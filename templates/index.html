@@ -1,10 +1,10 @@
 <!doctype html>
 <html>
 <head>
-    <title>File browser for {{ BASE_DIR }}</title>
+    <title>File browser for {{ IMAGE_DIR }}</title>
 </head>
 <body>
-    <h1>Files</h1>
+    <h1>Files in {{ IMAGE_DIR }}</h1>
 
     <form action="/upload" method="post" enctype="multipart/form-data">
         <input type="file" name="file" required>

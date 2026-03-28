@@ -7,5 +7,5 @@ Local UI available to all devices on the network to upload, delete, and download
 ## Usage
 
 ```sh
-flask run --host=0.0.0.0
+uv run -- flask run -p 3000
 ```

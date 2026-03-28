@@ -1,7 +1,7 @@
 [project]
 name = "post-rail"
 version = "0.1.0"
-description = "Add your description here"
+description = "Application to manipulate image files."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

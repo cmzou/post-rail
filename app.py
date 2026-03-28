@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 
 IMAGE_DIR = "images"
 BASE_DIR = os.path.abspath(IMAGE_DIR)
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
+ALLOWED_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif"}
 MAX_FILE_SIZE_MB = 5
 MAX_FILE_SIZE = 1024 * 1024  * MAX_FILE_SIZE_MB
 
@@ -13,7 +13,8 @@ app.config["MAX_CONTENT_LENGTH"] = MAX_FILE_SIZE
 app.secret_key = "change-this-secret-key"
 
 def is_allowed_file_ext(filename):
-    return "." in filename and os.path.splitext(filename)[1] in ALLOWED_EXTENSIONS
+    file_ext = os.path.splitext(filename)[1]
+    return "." in filename and file_ext in ALLOWED_EXTENSIONS
 
 def safe_path(filename):
     # Prevent path traversal

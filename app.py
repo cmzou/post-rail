@@ -2,7 +2,7 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory, abort
 from werkzeug.utils import secure_filename
 
-IMAGE_DIR = "images"
+IMAGE_DIR = "./static/images"
 BASE_DIR = os.path.abspath(IMAGE_DIR)
 ALLOWED_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif"}
 MAX_FILE_SIZE_MB = 5

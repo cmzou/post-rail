@@ -70,7 +70,7 @@ def delete(filename):
     path = safe_path(filename)
 
     if os.path.exists(path):
-        # os.remove(path)
+        os.remove(path)
         print(f"file {path} has been removed")
 
     return redirect(url_for("index"))

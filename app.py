@@ -1,17 +1,25 @@
 import os
+import yaml
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory, abort
 from werkzeug.utils import secure_filename
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 IMAGE_DIR = "./static/images"
+SECRETS_FILE = "./secrets.yml"
 BASE_DIR = os.path.abspath(IMAGE_DIR)
 ALLOWED_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif"}
 MAX_FILE_SIZE_MB = 5
 MAX_FILE_SIZE = 1024 * 1024  * MAX_FILE_SIZE_MB
 
+class Secrets:
+    def __init__(self) -> None:
+        self.config = yaml.safe_load(open(SECRETS_FILE))
+
+secrets = Secrets()
+
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = MAX_FILE_SIZE
-app.secret_key = "change-this-secret-key"
+app.secret_key = secrets.config["secret_key"]
 
 app.wsgi_app = ProxyFix(
     app.wsgi_app,x_for=1, x_proto=1, x_host=1, x_prefix=1

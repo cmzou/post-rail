@@ -40,6 +40,7 @@ def safe_path(filename):
 @app.route("/")
 def index():
     files = os.listdir(BASE_DIR)
+    files = [f for f in files if os.path.splitext(f)[1] in ALLOWED_EXTENSIONS]
     return render_template("index.html", files=files, IMAGE_DIR=IMAGE_DIR)
 
 @app.route("/upload", methods=["POST"])

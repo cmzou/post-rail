@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory, abort
 from werkzeug.utils import secure_filename
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 IMAGE_DIR = "./static/images"
 BASE_DIR = os.path.abspath(IMAGE_DIR)
@@ -11,6 +12,10 @@ MAX_FILE_SIZE = 1024 * 1024  * MAX_FILE_SIZE_MB
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = MAX_FILE_SIZE
 app.secret_key = "change-this-secret-key"
+
+app.wsgi_app = ProxyFix(
+    app.wsgi_app,x_for=1, x_proto=1, x_host=1, x_prefix=1
+)
 
 def is_allowed_file_ext(filename):
     file_ext = os.path.splitext(filename)[1]

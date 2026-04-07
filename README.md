@@ -9,5 +9,6 @@ Also supports modifying configuration variables for a companion app.
 ## Usage
 
 ```sh
-uv run -- flask run -p 3000
+uv run -- flask run -p 8000
+uv run gunicorn -w 4 -b 127.0.0.1:8000 'app:app'
 ```

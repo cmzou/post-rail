@@ -82,6 +82,11 @@ def download(filename):
     filename = secure_filename(filename)
     return send_from_directory(BASE_DIR, filename, as_attachment=True)
 
+@app.route("/images/<filename>")
+def serve_image(filename):
+    filename = secure_filename(filename)
+    return send_from_directory(BASE_DIR, filename)
+
 @app.errorhandler(413)
 def too_large(e):
     return f"File too large (max {MAX_FILE_SIZE_MB} MB)", 413

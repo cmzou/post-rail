@@ -4,9 +4,10 @@ from flask import Flask, render_template, request, redirect, url_for, send_from_
 from werkzeug.utils import secure_filename
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-IMAGE_DIR = "./static/images"
+IMAGE_DIR = "images"
 SECRETS_FILE = "./secrets.yml"
-BASE_DIR = os.path.abspath(IMAGE_DIR)
+STATIC_DIR = "./static"
+BASE_DIR = os.path.abspath(os.path.join(STATIC_DIR, IMAGE_DIR))
 ALLOWED_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif"}
 MAX_FILE_SIZE_MB = 5
 MAX_FILE_SIZE = 1024 * 1024  * MAX_FILE_SIZE_MB
@@ -17,7 +18,7 @@ class Secrets:
 
 secrets = Secrets()
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder=STATIC_DIR)
 app.config["MAX_CONTENT_LENGTH"] = MAX_FILE_SIZE
 app.secret_key = secrets.config["secret_key"]
 

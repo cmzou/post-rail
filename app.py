@@ -8,6 +8,8 @@ import datetime
 import logging
 import subprocess
 
+from app_settings import special_day_to_texts, STATIC_DIR
+
 logger = logging.getLogger(__name__)
 
 logging.basicConfig(
@@ -17,15 +19,10 @@ logging.basicConfig(
 
 IMAGE_DIR = "images"
 SECRETS_FILE = "./secrets.yml"
-STATIC_DIR = "./static"
 BASE_DIR = os.path.abspath(os.path.join(STATIC_DIR, IMAGE_DIR))
 ALLOWED_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif"}
 MAX_FILE_SIZE_MB = 5
 MAX_FILE_SIZE = 1024 * 1024  * MAX_FILE_SIZE_MB
-
-special_day_to_texts = {
-    "2026-04-09": "CSS Rainbow Text"
-}
 
 class Secrets:
     def __init__(self) -> None:

@@ -1,3 +1,4 @@
 images/
 __pycache__/
 secrets.*
+app_settings.py

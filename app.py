@@ -114,6 +114,7 @@ def restart_service():
         logger.info(f"Application restarted")
         # show to user
         # restart service
+        return "Button pressed", 200
 
 @app.errorhandler(413)
 def too_large(e):

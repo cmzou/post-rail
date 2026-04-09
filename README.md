@@ -8,7 +8,14 @@ Also supports modifying configuration variables for a companion app.
 
 ## Usage
 
+Running just the flask app:
+
 ```sh
 uv run -- flask run -p 8000
+```
+
+Running behind a reverse proxy:
+
+```sh
 uv run gunicorn -w 4 -b 127.0.0.1:8000 'app:app'
 ```

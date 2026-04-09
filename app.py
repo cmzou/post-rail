@@ -5,6 +5,14 @@ from werkzeug.utils import secure_filename
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 import datetime
+import logging
+
+logger = logging.getLogger(__name__)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="[%(asctime)s] - %(levelname)s - %(name)s: %(message)s",
+)
 
 IMAGE_DIR = "images"
 SECRETS_FILE = "./secrets.yml"
@@ -86,7 +94,7 @@ def delete(filename):
 
     if os.path.exists(path):
         os.remove(path)
-        print(f"file {path} has been removed")
+        logger.info(f"File removed: {path}")
 
     return redirect(url_for("index"))
 
@@ -99,6 +107,13 @@ def download(filename):
 def serve_image(filename):
     filename = secure_filename(filename)
     return send_from_directory(BASE_DIR, filename)
+
+@app.route("/restart", methods=["GET", "POST"])
+def restart_service():
+    if request.method == "POST":
+        logger.info(f"Application restarted")
+        # show to user
+        # restart service
 
 @app.errorhandler(413)
 def too_large(e):

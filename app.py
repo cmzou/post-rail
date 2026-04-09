@@ -113,7 +113,7 @@ def serve_image(filename):
 def restart_service():
     logger.info(f"Application restarted")
     subprocess.run(["sudo", "systemctl", "restart", "inky-display.service"])
-    return jsonify({"message": "Button pressed"}), 200
+    return jsonify({"message": "Restarting application..."}), 200
 
 @app.errorhandler(413)
 def too_large(e):

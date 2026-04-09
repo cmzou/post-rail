@@ -4,6 +4,8 @@ from flask import Flask, render_template, request, redirect, url_for, send_from_
 from werkzeug.utils import secure_filename
 from werkzeug.middleware.proxy_fix import ProxyFix
 
+import datetime
+
 IMAGE_DIR = "images"
 SECRETS_FILE = "./secrets.yml"
 STATIC_DIR = "./static"
@@ -11,6 +13,10 @@ BASE_DIR = os.path.abspath(os.path.join(STATIC_DIR, IMAGE_DIR))
 ALLOWED_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif"}
 MAX_FILE_SIZE_MB = 5
 MAX_FILE_SIZE = 1024 * 1024  * MAX_FILE_SIZE_MB
+
+special_day_to_texts = {
+    "2026-04-09": "CSS Rainbow Text"
+}
 
 class Secrets:
     def __init__(self) -> None:
@@ -42,7 +48,14 @@ def safe_path(filename):
 def index():
     files = os.listdir(BASE_DIR)
     files = [f for f in files if os.path.splitext(f)[1] in ALLOWED_EXTENSIONS]
-    return render_template("index.html", files=files, IMAGE_DIR=BASE_DIR)
+
+    today =  datetime.datetime.today().strftime("%Y-%m-%d")
+
+    if today in special_day_to_texts:
+        marquee_text = special_day_to_texts[today]
+    else:
+        marquee_text = ""
+    return render_template("index.html", files=files, IMAGE_DIR=BASE_DIR, marquee_text=marquee_text)
 
 @app.route("/upload", methods=["POST"])
 def upload():

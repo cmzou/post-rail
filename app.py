@@ -6,6 +6,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 import datetime
 import logging
+import subprocess
 
 logger = logging.getLogger(__name__)
 
@@ -111,6 +112,7 @@ def serve_image(filename):
 @app.route("/restart", methods=["POST"])
 def restart_service():
     logger.info(f"Application restarted")
+    subprocess.run(["sudo", "systemctl", "restart", "inky-display.service"])
     return jsonify({"message": "Button pressed"}), 200
 
 @app.errorhandler(413)

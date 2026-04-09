@@ -1,6 +1,6 @@
 import os
 import yaml
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory, abort
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory, abort, jsonify
 from werkzeug.utils import secure_filename
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -108,13 +108,10 @@ def serve_image(filename):
     filename = secure_filename(filename)
     return send_from_directory(BASE_DIR, filename)
 
-@app.route("/restart", methods=["GET", "POST"])
+@app.route("/restart", methods=["POST"])
 def restart_service():
-    if request.method == "POST":
-        logger.info(f"Application restarted")
-        # show to user
-        # restart service
-        return "Button pressed", 200
+    logger.info(f"Application restarted")
+    return jsonify({"message": "Button pressed"}), 200
 
 @app.errorhandler(413)
 def too_large(e):

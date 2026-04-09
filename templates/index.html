@@ -8,7 +8,7 @@
             background-clip: text;
             font-size: 50px;
             font-weight: bold;
-            display: inline-block;
+            display: block;
             animation: css-rainbow-text 10s linear infinite;
         }
         @keyframes css-rainbow-text {
@@ -25,9 +25,8 @@
 
     <div class="css-rainbow-text">{{ marquee_text }}</div>
 
-    <form action="/restart" method="post">
-        <input type="submit" value="Restart Application">
-    </form>
+    <button type="button" onclick="pressButton()">Restart Application</button>
+    <p id="message"></p>
 
     <p></p>
 
@@ -50,5 +49,15 @@
         </li>
         {% endfor %}
     </ul>
+    <script>
+        function pressButton() {
+            fetch('/restart', {method: 'POST'})
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('message').textContent = data.message;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
 </body>
 </html>

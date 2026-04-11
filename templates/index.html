@@ -1,25 +1,45 @@
 <!doctype html>
 <html>
-    <style>
-        .css-rainbow-text {
-            background: linear-gradient(90deg, #f00, #ff2b00, #f50, #ff8000, #fa0, #ffd500, #ff0, #d4ff00, #af0, #80ff00, #5f0, #2bff00, #0f0, #00ff2b, #0f5, #00ff80, #0fa, #00ffd5, #0ff, #00d4ff, #0af, #007fff, #05f, #002bff, #00f, #2a00ff, #50f, #7f00ff, #a0f, #d400ff, #f0f, #ff00d4, #f0a, #ff0080, #f05, #ff002b, #f00);
-            -webkit-text-fill-color: transparent;
-            -webkit-background-clip: text;
-            background-clip: text;
-            font-size: 50px;
-            font-weight: bold;
-            display: block;
-            animation: css-rainbow-text 10s linear infinite;
+<style>
+    .css-rainbow-text {
+        background: linear-gradient(90deg, #f00, #ff2b00, #f50, #ff8000, #fa0, #ffd500, #ff0, #d4ff00, #af0, #80ff00, #5f0, #2bff00, #0f0, #00ff2b, #0f5, #00ff80, #0fa, #00ffd5, #0ff, #00d4ff, #0af, #007fff, #05f, #002bff, #00f, #2a00ff, #50f, #7f00ff, #a0f, #d400ff, #f0f, #ff00d4, #f0a, #ff0080, #f05, #ff002b, #f00);
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+        font-size: 50px;
+        font-weight: bold;
+        display: block;
+        animation: css-rainbow-text 10s linear infinite;
+    }
+
+    @keyframes css-rainbow-text {
+        0% {
+            transform: translateX(0vw);
         }
-        @keyframes css-rainbow-text {
-            0%   { transform: translateX(0vw); }
-            100% { transform: translateX(100vw); }
+
+        100% {
+            transform: translateX(100vw);
         }
-    </style>
+    }
+
+    section {
+        display: inline-flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+
+    article {
+        padding: 10px;
+        margin: 10px;
+        border-color: aqua;
+        flex: 1;
+    }
+</style>
 
 <head>
     <title>File browser for {{ IMAGE_DIR }}</title>
 </head>
+
 <body>
     <h1>Files in {{ IMAGE_DIR }}</h1>
 
@@ -30,30 +50,42 @@
 
     <p></p>
 
-    <h2>Upload images</h2>
+    <section>
 
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" required>
-        <button type="submit">Upload</button>
-    </form>
+        <article>
 
-    <ul>
-        {% for file in files %}
-        <li>
-            {{ file }}
-            <img src="/images/{{ file }}" width="200">
+            <h2>Upload images</h2>
 
-            <a href="/download/{{ file }}">download</a>
+            Size limit: 1 GB
 
-            <form action="/delete/{{ file }}" method="post" style="display:inline;">
-                <button type="submit">delete</button>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" required>
+                <button type="submit">Upload</button>
             </form>
-        </li>
-        {% endfor %}
-    </ul>
+
+            <ul>
+                {% for file in files %}
+                <li>
+                    {{ file }}
+                    <img src="/images/{{ file }}" width="200">
+
+                    <a href="/download/{{ file }}">download</a>
+
+                    <form action="/delete/{{ file }}" method="post" style="display:inline;">
+                        <button type="submit">delete</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+        </article>
+        <article>
+            <h2>Edit config file</h2>
+        </article>
+    </section>
+
     <script>
         function pressButton() {
-            fetch('/restart', {method: 'POST'})
+            fetch('/restart', { method: 'POST' })
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('message').textContent = data.message;
@@ -62,4 +94,5 @@
         }
     </script>
 </body>
+
 </html>

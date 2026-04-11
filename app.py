@@ -20,6 +20,8 @@ logging.basicConfig(
 IMAGE_DIR = "images"
 SECRETS_FILE = "./secrets.yml"
 BASE_DIR = os.path.abspath(os.path.join(STATIC_DIR, IMAGE_DIR))
+CONFIG_FILE = "./test.txt"
+
 ALLOWED_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif"}
 MAX_FILE_SIZE_MB = 5
 MAX_FILE_SIZE = 1024 * 1024  * MAX_FILE_SIZE_MB
@@ -61,7 +63,12 @@ def index():
         marquee_text = special_day_to_texts[today]
     else:
         marquee_text = ""
-    return render_template("index.html", files=files, IMAGE_DIR=BASE_DIR, marquee_text=marquee_text)
+
+    # Load config file
+    with open(CONFIG_FILE, "r") as f:
+        config_content = f.read()
+
+    return render_template("index.html", files=files, IMAGE_DIR=BASE_DIR, marquee_text=marquee_text, config_content=config_content)
 
 @app.route("/upload", methods=["POST"])
 def upload():
@@ -111,6 +118,18 @@ def restart_service():
     logger.info(f"Application restarted")
     subprocess.run(["sudo", "systemctl", "restart", "inky-display.service"])
     return jsonify({"message": "Restarting application..."}), 200
+
+@app.route("/save-config", methods=["POST"])
+def save_config():
+    content = request.form.get("content", "").replace("\r\n", "\n")
+    try:
+        with open(CONFIG_FILE, "w") as f:
+            f.write(content)
+        logger.info(f"Config file saved")
+        return redirect(url_for("index"))
+    except Exception as e:
+        logger.error(f"Error saving config: {e}")
+        abort(500)
 
 @app.errorhandler(413)
 def too_large(e):

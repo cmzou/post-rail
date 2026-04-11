@@ -68,7 +68,7 @@ def index():
     with open(CONFIG_FILE, "r") as f:
         config_content = f.read()
 
-    return render_template("index.html", files=files, IMAGE_DIR=BASE_DIR, marquee_text=marquee_text, config_content=config_content)
+    return render_template("index.html", files=files, IMAGE_DIR=BASE_DIR, marquee_text=marquee_text, config_content=config_content, CONFIG_FILE=CONFIG_FILE)
 
 @app.route("/upload", methods=["POST"])
 def upload():

@@ -52,7 +52,6 @@
     <section>
 
         <article>
-
             <h2>Upload images</h2>
 
             Size limit: 1 GB
@@ -80,14 +79,23 @@
         <article>
             <h2>Edit config file</h2>
 
-            The application must be restarted for changes to take effect.
+            {{ CONFIG_FILE }}:
+
+            <p>The application must be restarted for changes to take effect.</p>
 
             <form method="post" action="/save-config">
-                <textarea name="content" style="width: 500px; height: 500px; font-family: monospace;">{{ config_content }}</textarea>
+                <textarea name="content" style="width: 500px; height: 400px; font-family: monospace;">{{ config_content }}</textarea>
                 <br><br>
                 <button type="submit">Save</button>
             </form>
         </article>
+        <!-- <article>
+            <h2>Search for bus stop data</h2>
+
+            Edit route_to_ids from data_parsers.py and restart application for changes to take effect.
+
+
+        </article> -->
     </section>
 
     <script>
